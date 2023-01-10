@@ -1,1 +1,3 @@
 /config.env
+/venv/
+/.pytest_cache/
