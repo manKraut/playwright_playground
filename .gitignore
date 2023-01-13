@@ -2,3 +2,4 @@
 /venv/
 /.pytest_cache/
 /utils/test_comp.txt
+/.idea/
