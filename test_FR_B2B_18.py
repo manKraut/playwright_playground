@@ -1,7 +1,7 @@
 from playwright.sync_api import Playwright, sync_playwright, expect
 
 
-def test_case_id_23(playwright: Playwright) -> None:
+def test_case_id_32(playwright: Playwright) -> None:
     browser = playwright.chromium.launch(headless=False)
     context = browser.new_context()
     page = context.new_page()
@@ -29,8 +29,16 @@ def test_case_id_23(playwright: Playwright) -> None:
     page.get_by_role("button", name="Checkout").click()
     page.get_by_role("button", name="Συνέχεια").click()
 
-    stripe_frame = page.frame_locator('#cardNumber').get_by_placeholder("Αριθμός κάρτας")
-    stripe_frame.locator('[placeholder="Αριθμός κάρτας"]').fill('4242424242424242')
+    page.locator(".card-item").first.click()
+    page.get_by_placeholder("Αριθμός κάρτας").fill(
+        "4242 4242 4242 42422")
+    page.frame_locator("iframe[name=\"__privateStripeFrame4496\"]").get_by_placeholder("Αριθμός κάρτας").press("Tab")
+    page.frame_locator("iframe[name=\"__privateStripeFrame4497\"]").get_by_placeholder("MM/YY").fill("03 / 26")
+    page.frame_locator("iframe[name=\"__privateStripeFrame4497\"]").get_by_placeholder("MM/YY").press("Tab")
+    page.frame_locator("iframe[name=\"__privateStripeFrame4498\"]").get_by_placeholder("CVV").fill("123")
+    page.get_by_role("button", name="Συνέχεια").click()
+
+    # page.locator('').get_by_text("Αριθμός κάρτας").fill("4242 4242 4242 4242")
     # page.get_by_placeholder("Αριθμός κάρτας").fill("4 242 4242 4242 4242")
     # page.get_by_placeholder("MM/YY").click()
     # page.get_by_placeholder("MM/YY").fill("01 / 25")
