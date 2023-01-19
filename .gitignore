@@ -2,7 +2,4 @@
 /venv/
 /.pytest_cache/
 /utils/test_comp.txt
-node_modules/
-/test-results/
-/playwright-report/
-/playwright/.cache/
+/.idea/
