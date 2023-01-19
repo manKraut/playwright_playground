@@ -21,5 +21,4 @@ def test_case_id_24(playwright: Playwright):
 
     page.get_by_role("button", name="ΕΙΣΟΔΟΣ ΣΤΟ B2B").click()
     page.get_by_role("link", name="B2B Dashboard").click()
-    #expect(page).to_have_url('https://app.linkedbusiness.eu/b2b-dashboard/b2b-markets-view')
     expect(page).to_have_url(config['PAGE']['UrlB2B'] + "/" + "b2b-markets-view")
