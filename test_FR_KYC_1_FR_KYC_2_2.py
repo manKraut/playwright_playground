@@ -10,7 +10,7 @@ def test_case_id_43(playwright: Playwright):
     browser = playwright.chromium.launch(headless=False)
     context = browser.new_context()
     page = context.new_page()
-    page.goto("https://app.linkedbusiness.eu/home")
+    page.goto(config['PAGE']['Url'])
     # Successful Login
     page.get_by_role("button", name="Είσοδος").click()
     page.get_by_placeholder("Email").click()
