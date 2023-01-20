@@ -1,6 +1,5 @@
 import configparser
 
-
 from playwright.sync_api import Playwright, Page, expect
 
 
@@ -11,6 +10,7 @@ def test_case_id_43(playwright: Playwright):
     context = browser.new_context()
     page = context.new_page()
     page.goto(config['PAGE']['Url'])
+
     # Successful Login
     page.get_by_role("button", name="Είσοδος").click()
     page.get_by_placeholder("Email").click()
@@ -29,7 +29,7 @@ def test_case_id_43(playwright: Playwright):
     page.get_by_role("link", name="ΠΙΕΡΙΚΗ ΧΟΙΡΕΙΟΥ ΚΡΕΑΤΟΣ ΑΝΩΝΥΜΗ ΕΤΑΙΡΙΑ").click()
 
     # check that results exists
-    page.goto("https://app.linkedbusiness.eu/company/094182927/overview")
+    page.goto(config['PAGE']['UrlKYCl'] + "/" + "094403140" + "/" + "overview")
 
     # ---------------------
     context.close()
