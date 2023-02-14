@@ -23,6 +23,8 @@ def test_case_id_14(playwright: Playwright) -> None:
     assert three_months == "Ιδρύσεις Τριμήνου"
     assert year == "Ιδρύσεις Έτους"
 
+
+
     context.close()
     browser.close()
 

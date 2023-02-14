@@ -18,7 +18,7 @@ def test_case_id_18(playwright: Playwright) -> None:
     page.wait_for_timeout(3000) # set timeout to wait for the real url before assertion
     redirection_url = page.url
 
-    assert redirection_url == "https://app.linkedbusiness.eu/company/094027165/overview"
+    assert redirection_url == config['PAGE']['UrlKYCl'] + "/" + "094027165" + "/" + "overview"
 
     context.close()
     browser.close()

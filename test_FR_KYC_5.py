@@ -2,7 +2,7 @@ import configparser
 
 from playwright.sync_api import Playwright, Page, expect
 
-def test_case_id_44(playwright: Playwright):
+def test_case_id_45(playwright: Playwright):
     config = configparser.ConfigParser()
     config.read('config.env')
     browser = playwright.chromium.launch(headless=False)
@@ -21,16 +21,23 @@ def test_case_id_44(playwright: Playwright):
     page.get_by_role("button", name="Είσοδος").click()
     page.get_by_role("button", name="ΕΙΣΟΔΟΣ ΣΤΟ KYC").click()
 
-    # Verify that the user is able to see company's info (basic) and all the potential data blocks (header free mode)
+    # Successful Login
     page.get_by_placeholder("Αναζήτηση επιχείρησης με ΑΦΜ ή ΓΕΜΗ...").fill("053108548000")
     page.get_by_role("button", name="Αναζήτηση").click()
     page.get_by_role("link", name="ΠΙΕΡΙΚΗ ΧΟΙΡΕΙΟΥ ΚΡΕΑΤΟΣ ΑΕ").click()
-    page.goto(config['PAGE']['UrlKYCl'] + "/" + "094403140" + "/" + "overview")
+    page.get_by_role("link", name="Επιδόσεις").click()
+    #page.goto(config['PAGE']['UrlKYCl'] + "/" + "094403140" + "/" + "performance")
 
-    # check that results exists .....
+    #assume company is bought
 
-    page.goto(config['PAGE']['UrlKYCl'] + "/" + "094403140" + "/" + "overview")
+    #look for labers
+    # Πωλήσεις & Κέρδη
+    # €3,2M, €110,15K
 
-    # ---------------------
+    page.get_by_text("Πωλήσεις").click()
+    page.get_by_text("Κέρδη").first.click()
+    page.get_by_text("€3,2M").click()
+    page.get_by_text("€110,15K").click()
+
     context.close()
     browser.close()
