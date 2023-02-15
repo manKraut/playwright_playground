@@ -4,7 +4,7 @@ from playwright.sync_api import Playwright, Page, expect
 
 def test_case_id_46(playwright: Playwright):
     config = configparser.ConfigParser()
-    config.read('config.env')
+    config.read('config.env', 'utf-8')
     browser = playwright.chromium.launch(headless=False)
     context = browser.new_context()
     page = context.new_page()
@@ -22,20 +22,19 @@ def test_case_id_46(playwright: Playwright):
     page.get_by_role("button", name="ΕΙΣΟΔΟΣ ΣΤΟ KYC").click()
 
     # Successful Login
-    page.get_by_placeholder("Αναζήτηση επιχείρησης με ΑΦΜ ή ΓΕΜΗ...").fill("053108548000")
+    page.get_by_placeholder("Αναζήτηση επιχείρησης με ΑΦΜ ή ΓΕΜΗ...").fill(config['EXAMPLES']['g1']) #company gemh
     page.get_by_role("button", name="Αναζήτηση").click()
-    page.get_by_role("link", name="ΠΙΕΡΙΚΗ ΧΟΙΡΕΙΟΥ ΚΡΕΑΤΟΣ ΑΕ").click()
+    page.get_by_role("link", name=config['EXAMPLES']['cn1']).click() #company name
     page.get_by_role("link", name="Διοίκηση & Ιδιοκτησία").click()
-    #page.goto(config['PAGE']['UrlKYCl'] + "/" + "094403140" + "/" + "business-network")
+
 
     #assume company is bought
 
-    #look for labers
+    #look for labels
 
     page.get_by_text("Διοικητικές Θέσεις (ΓΕΜΗ)").click()
-    #page.get_by_text("ΝΙΚΟΠΟΥΛΟΣ")
-    #page.locator("div").filter(has_text="sdfsdfsdfdf")
-    #page.locator("div").filter(has_text="ΜΠΑΤΑΛΑΣ ΝΙΚΟΛΑΟΣ ΚΩΝΣΤΑΝΤΙΝΟΣ")
+    page.get_by_role("link", name=config['EXAMPLES']['bm11']).click(button="right") #board member name
+    page.get_by_role("link", name=config['EXAMPLES']['bm12']).click(button="right") #board member name
     page.get_by_text("Ρόλος").click()
 
     context.close()

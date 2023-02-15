@@ -4,7 +4,7 @@ from playwright.sync_api import Playwright, Page, expect
 
 def test_case_id_44(playwright: Playwright):
     config = configparser.ConfigParser()
-    config.read('config.env')
+    config.read('config.env', 'utf-8')
     browser = playwright.chromium.launch(headless=False)
     context = browser.new_context()
     page = context.new_page()
@@ -22,14 +22,14 @@ def test_case_id_44(playwright: Playwright):
     page.get_by_role("button", name="ΕΙΣΟΔΟΣ ΣΤΟ KYC").click()
 
     # Verify that the user is able to see company's info (basic) and all the potential data blocks (header free mode)
-    page.get_by_placeholder("Αναζήτηση επιχείρησης με ΑΦΜ ή ΓΕΜΗ...").fill("053108548000")
+    page.get_by_placeholder("Αναζήτηση επιχείρησης με ΑΦΜ ή ΓΕΜΗ...").fill(config['EXAMPLES']['g1'])
     page.get_by_role("button", name="Αναζήτηση").click()
-    page.get_by_role("link", name="ΠΙΕΡΙΚΗ ΧΟΙΡΕΙΟΥ ΚΡΕΑΤΟΣ ΑΕ").click()
-    page.goto(config['PAGE']['UrlKYCl'] + "/" + "094403140" + "/" + "overview")
+    page.get_by_role("link", name=config['EXAMPLES']['cn1']).click() #company name 1
+    page.goto(config['PAGE']['UrlKYCl'] + "/" + config['EXAMPLES']['v1'] + "/" + "overview") #company VAT
 
     # check that results exists .....
 
-    page.goto(config['PAGE']['UrlKYCl'] + "/" + "094403140" + "/" + "overview")
+    page.goto(config['PAGE']['UrlKYCl'] + "/" + config['EXAMPLES']['v1'] + "/" + "overview")
 
     # ---------------------
     context.close()

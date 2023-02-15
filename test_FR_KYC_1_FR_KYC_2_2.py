@@ -5,7 +5,7 @@ from playwright.sync_api import Playwright, Page, expect
 
 def test_case_id_43(playwright: Playwright):
     config = configparser.ConfigParser()
-    config.read('config.env')
+    config.read('config.env', 'utf-8')
     browser = playwright.chromium.launch(headless=False)
     context = browser.new_context()
     page = context.new_page()
@@ -24,12 +24,12 @@ def test_case_id_43(playwright: Playwright):
 
     # Verify that the user is able to search for companies using VAT ID
     page.get_by_placeholder("Αναζήτηση επιχείρησης με ΑΦΜ ή ΓΕΜΗ...").click()
-    page.get_by_placeholder("Αναζήτηση επιχείρησης με ΑΦΜ ή ΓΕΜΗ...").fill("053108548000")
+    page.get_by_placeholder("Αναζήτηση επιχείρησης με ΑΦΜ ή ΓΕΜΗ...").fill(config['EXAMPLES']['g1'])
     page.get_by_role("button", name="Αναζήτηση").click()
-    page.get_by_role("link", name="ΠΙΕΡΙΚΗ ΧΟΙΡΕΙΟΥ ΚΡΕΑΤΟΣ ΑΝΩΝΥΜΗ ΕΤΑΙΡΙΑ").click()
+    page.get_by_role("link", name=config['EXAMPLES']['cn1']).click() #company name 1
 
     # check that results exists
-    page.goto(config['PAGE']['UrlKYCl'] + "/" + "094403140" + "/" + "overview")
+    page.goto(config['PAGE']['UrlKYCl'] + "/" + config['EXAMPLES']['v1'] + "/" + "overview")
 
     # ---------------------
     context.close()
