@@ -5,7 +5,7 @@ from playwright.sync_api import Playwright, Page, expect
 
 def test_case_id_13(playwright: Playwright):
     config = configparser.ConfigParser()
-    config.read('config.env')
+    config.read('config.env', 'utf-8')
     browser = playwright.chromium.launch(headless=False)
     context = browser.new_context()
     page = context.new_page()
