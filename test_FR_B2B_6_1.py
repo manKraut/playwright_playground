@@ -11,10 +11,10 @@ def test_case_id_16(playwright: Playwright) -> None:
     page = context.new_page()
     page.goto(config['PAGE']['UrlB2B'])
     page.get_by_placeholder("Αναζήτηση Αγοράς...").click()
-    page.get_by_role("option", name="Ξενοδοχεία (8.083)").click()
+    page.get_by_role("option", name="Ξενοδοχεία" + " " + "(" + config['EXAMPLES']['b2bHotCnt_1'] + ")").click()
     page.get_by_role("button", name="Αναζήτηση").click()
 
-    page.locator("[id=\"\\30 94027165\"]").get_by_text(
+    page.locator(f"[id=\"\\30 {int(config['EXAMPLES']['v4'])}\"]").get_by_text(
         config['EXAMPLES']['cn4']).click()
     name_on_map = page.get_by_role("heading", name=config['EXAMPLES']['cn4'])
 

@@ -11,7 +11,7 @@ def test_case_id_23(playwright: Playwright) -> None:
     page = context.new_page()
     page.goto(config['PAGE']['UrlB2B'])
     page.get_by_placeholder("Αναζήτηση Αγοράς...").click()
-    page.get_by_role("option", name="Ξενοδοχεία (8.083)").click()
+    page.get_by_role("option", name="Ξενοδοχεία" + " " + "(" + config['EXAMPLES']['b2bHotCnt_1'] + ")").click()
     page.get_by_role("button", name="Αναζήτηση").click()
 
     initial_market_value = page.locator(".stats-value").nth(0).inner_text().replace('.', '')
@@ -19,7 +19,7 @@ def test_case_id_23(playwright: Playwright) -> None:
     page.get_by_role("button", name="Γεωγραφία").click()
     page.get_by_label("Τ.Κ.").check()
     page.locator("tag-input div").nth(1).click()
-    page.get_by_placeholder("Όλοι οι Τ.Κ.").fill("11362")
+    page.get_by_placeholder("Όλοι οι Τ.Κ.").fill(config['EXAMPLES']['tk_1'])
     page.get_by_role("button", name="Εφαρμογή Φίλτρου").click()
     page.get_by_role("button", name="Αναζήτηση").click()
 

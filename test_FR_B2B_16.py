@@ -25,7 +25,7 @@ def test_case_id_30(playwright: Playwright):
     # click on first purchased lead
     page.get_by_text("Ξενοδοχεία 17").first.click()
     # click on "Εταιρικό Report" of the first result in the purchased lead
-    page.locator("[id=\"\\38 01949762\"]").get_by_role("button", name="Εταιρικό Report").click()
+    page.locator(f"[id=\"\\38 {int(config['EXAMPLES']['v6'])}\"]").get_by_role("button", name="Εταιρικό Report").click()
 
     expect(page).to_have_url(config['PAGE']['UrlKYCl'] + "/" + config['EXAMPLES']['v6'] + "/" + "overview")
 

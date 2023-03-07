@@ -11,7 +11,7 @@ def test_case_id_21(playwright: Playwright) -> None:
     page = context.new_page()
     page.goto(config['PAGE']['UrlB2B'])
     page.get_by_placeholder("Αναζήτηση Αγοράς...").click()
-    page.get_by_role("option", name="Ξενοδοχεία (8.083)").click()
+    page.get_by_role("option", name="Ξενοδοχεία" + " " + "(" + config['EXAMPLES']['b2bHotCnt_1'] + ")").click()
     page.get_by_role("button", name="Αναζήτηση").click()
 
     initial_market_value = page.locator(".stats-value").nth(0).inner_text().replace('.', '')
