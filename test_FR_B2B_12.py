@@ -5,7 +5,7 @@ from playwright.sync_api import Playwright, Page, expect
 
 def test_case_id_26(playwright: Playwright):
     config = configparser.ConfigParser()
-    config.read('config.env')
+    config.read('config.env', 'utf-8')
     browser = playwright.chromium.launch(headless=False)
     context = browser.new_context()
     page = context.new_page()
@@ -26,7 +26,7 @@ def test_case_id_26(playwright: Playwright):
     page.get_by_text("Ξενοδοχεία 17").first.click()
     # click on "Εταιρικό Report" of the first result in the purchased lead
     page.locator("[id=\"\\38 01949762\"]").get_by_role("button", name="Εταιρικό Report").click()
-    expect(page).to_have_url(config['PAGE']['UrlKYCl'] + "/" + "801949762" + "/" + "overview")
+    expect(page).to_have_url(config['PAGE']['UrlKYCl'] + "/" + config['EXAMPLES']['v6'] + "/" + "overview")
 
     context.close()
     browser.close()

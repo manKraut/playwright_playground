@@ -5,7 +5,7 @@ from playwright.sync_api import Playwright, Page, expect
 
 def test_case_id_29(playwright: Playwright):
     config = configparser.ConfigParser()
-    config.read('config.env')
+    config.read('config.env', 'utf-8')
     browser = playwright.chromium.launch(headless=False)
     context = browser.new_context()
     page = context.new_page()
@@ -28,7 +28,7 @@ def test_case_id_29(playwright: Playwright):
     # click at a point on map
     page.locator("div:nth-child(3) > div:nth-child(4)").click()
     # get the name of the company, showing on the map
-    name_on_map = page.get_by_role("heading", name="CENTRAL BEACH HOTEL ΜΟΝΟΠΡΟΣΩΠΗ ΙΔΙΩΤΙΚΗ ΚΕΦΑΛΑΙΟΥΧΙΚΗ ΕΤΑΙΡΙΑ")
+    name_on_map = page.get_by_role("heading", name=config['EXAMPLES']['cn5'] )
 
     assert name_on_map is not None
 
