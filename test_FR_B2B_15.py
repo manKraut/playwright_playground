@@ -23,8 +23,8 @@ def test_case_id_29(playwright: Playwright):
 
     page.get_by_role("link", name="B2B Dashboard").click()
     # click on first purchased lead
-    page.get_by_text("Ξενοδοχεία 17").first.click()
-    page.goto(config['PAGE']['UrlB2B'] + "/" + "b2b-my-leads?subscriptionId=106")
+    page.get_by_text("Ξενοδοχεία" + " " + config['EXAMPLES']['b2bHotCnt_univ']).first.click()
+    page.goto(config['PAGE']['UrlB2B'] + "/" + "b2b-my-leads?subscriptionId=" + config['EXAMPLES']['sid1'])
     # click at a point on map
     page.locator("div:nth-child(3) > div:nth-child(4)").click()
     # get the name of the company, showing on the map

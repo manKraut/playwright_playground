@@ -23,7 +23,7 @@ def test_case_id_27(playwright: Playwright):
 
     page.get_by_role("link", name="B2B Dashboard").click()
     # click on first purchased lead
-    page.get_by_text("Ξενοδοχεία 17").first.click()
+    page.get_by_text("Ξενοδοχεία" + " " + config['EXAMPLES']['b2bHotCnt_univ']).first.click()
     page.get_by_role("button", name="Προβολή σε Πίνακα").click()
 
     # Table columns headers

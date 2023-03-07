@@ -23,6 +23,6 @@ def test_case_id_28(playwright: Playwright):
 
     page.get_by_role("link", name="B2B Dashboard").click()
     # click on first purchased lead which is B2B Live
-    page.get_by_text("Ξενοδοχεία 17").first.click()
+    page.get_by_text("Ξενοδοχεία" + " " + config['EXAMPLES']['b2bHotCnt_univ']).first.click()
 
-    expect(page).to_have_url(config['PAGE']['UrlB2B'] + "/" + "b2b-my-leads?subscriptionId=106")
+    page.goto(config['PAGE']['UrlB2B'] + "/" + "b2b-my-leads?subscriptionId=" + config['EXAMPLES']['sid1'])
