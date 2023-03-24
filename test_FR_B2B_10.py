@@ -3,7 +3,7 @@ import configparser
 from playwright.sync_api import Playwright, Page, expect
 
 
-def test_case_id_24(playwright: Playwright):
+def test_case_id_27(playwright: Playwright):
     config = configparser.ConfigParser()
     config.read('config.env', 'utf-8')
     browser = playwright.chromium.launch(headless=False)
@@ -22,3 +22,7 @@ def test_case_id_24(playwright: Playwright):
     page.get_by_role("button", name="ΕΙΣΟΔΟΣ ΣΤΟ B2B").click()
     page.get_by_role("link", name="B2B Dashboard").click()
     expect(page).to_have_url(config['PAGE']['UrlB2B'] + "/" + "b2b-markets-view")
+
+    context.close()
+    browser.close()
+

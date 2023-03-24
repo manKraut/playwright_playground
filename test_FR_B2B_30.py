@@ -3,7 +3,7 @@ import configparser
 from playwright.sync_api import Playwright, sync_playwright, expect
 
 
-def test_case_id_34(playwright: Playwright) -> None:
+def test_case_id_44(playwright: Playwright) -> None:
     config = configparser.ConfigParser()
     config.read('config.env', 'utf-8')
     browser = playwright.chromium.launch(headless=False)
@@ -19,11 +19,16 @@ def test_case_id_34(playwright: Playwright) -> None:
     page.get_by_placeholder("Password").fill(config['USER']['Password'])
     page.get_by_role("button", name="Είσοδος").click()
 
-    # Click on the Alert icon
-    page.locator("app-header").get_by_role("img").nth(3).click()
-    notification = page.locator("app-notification-item")
+    # Go to dashboard and select specific lead "Ξενοδοχεία"
+    page.get_by_role("button", name="ΕΙΣΟΔΟΣ ΣΤΟ B2B").click()
+    page.get_by_role("link", name="B2B Dashboard").click()
+    page.get_by_text("Ξενοδοχεία 192 Ίδρυση από ΝΟΕΜΒΡΙΟΣ 2022")
+    sorting_filter = page.locator("app-dropdown").filter(
+        has_text="Πωλήσεις Ημερομηνία Ημερομηνία Εταιρικός Τύπος Εταιρικός Τύπος Πωλήσεις Πωλήσεις").get_by_role(
+        "button", name="Πωλήσεις")
 
-    assert notification is not None
+    # Verify the sorting filter is available
+    assert sorting_filter is not None
 
     context.close()
     browser.close()

@@ -11,17 +11,15 @@ def test_case_id_7(playwright: Playwright):
     page = context.new_page()
     page.goto(config['PAGE']['Url'])
 
-    # Successful Login
+    # Fill in the email and check if proper message is prompt
     page.get_by_role("button", name="Είσοδος").click()
     page.get_by_placeholder("Email").click()
     page.get_by_placeholder("Email").fill(config['USER']['Email'])
-    page.get_by_placeholder("Password").click()
-    page.get_by_placeholder("Password").fill(config['USER']['Password'])
-    page.get_by_role("button", name="Είσοδος").click()
 
-    # Access purchased packages
-    page.locator("app-header").get_by_role("img").nth(3).click()
-    page.get_by_role("button", name="Συνδρομές - Πακέτα Report").click()
+    page.get_by_role("button", name="Ξέχασα το password").click()
+    message = page.get_by_text("Μόλις σας στείλαμε Email για να αλλάξετε τον κωδικό σας.")
+
+    assert message == "Μόλις σας στείλαμε Email για να αλλάξετε τον κωδικό σας."
 
     context.close()
     browser.close()

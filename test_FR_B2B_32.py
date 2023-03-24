@@ -3,7 +3,7 @@ import configparser
 from playwright.sync_api import Playwright, sync_playwright, expect
 
 
-def test_case_id_34(playwright: Playwright) -> None:
+def test_case_id_46(playwright: Playwright) -> None:
     config = configparser.ConfigParser()
     config.read('config.env', 'utf-8')
     browser = playwright.chromium.launch(headless=False)
@@ -19,11 +19,17 @@ def test_case_id_34(playwright: Playwright) -> None:
     page.get_by_placeholder("Password").fill(config['USER']['Password'])
     page.get_by_role("button", name="Είσοδος").click()
 
-    # Click on the Alert icon
-    page.locator("app-header").get_by_role("img").nth(3).click()
-    notification = page.locator("app-notification-item")
+    # Go to B2B Sales Leads and select market "Ξενοδοχεία"
+    page.get_by_role("button", name="ΕΙΣΟΔΟΣ ΣΤΟ B2B").click()
+    page.get_by_placeholder("Αναζήτηση Αγοράς...").click()
+    page.get_by_role("option", name="Ξενοδοχεία (8.280)").click()
+    page.get_by_role("button", name="Αναζήτηση").click()
 
-    assert notification is not None
+    # Press the button "Δείτε τις υπόλοιπες Χ"
+    page.get_by_role("button", name=f"Αποκτήστε τις υπόλοιπες {config['EXAMPLES']['b2b_hotels_count_univ']}").click()
+    url = page.url
+
+    assert url is "https://app.linkedbusiness.eu/b2b-dashboard/b2b-my-leads?subscriptionId=119"
 
     context.close()
     browser.close()

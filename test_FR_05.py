@@ -24,5 +24,9 @@ def test_case_id_5(playwright: Playwright):
     page.locator("app-header").get_by_role("img").nth(3).click()
     page.get_by_role("button", name="Ιστορικό Αγορών").click()
 
+    url = page.url
+
+    assert url == "https://app.linkedbusiness.eu/user-profile/buy-history"
+
     context.close()
     browser.close()

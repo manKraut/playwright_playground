@@ -3,7 +3,7 @@ import configparser
 from playwright.sync_api import Playwright, Page, expect
 
 
-def test_case_id_14(playwright: Playwright) -> None:
+def test_case_id_19(playwright: Playwright) -> None:
     config = configparser.ConfigParser()
     config.read('config.env', 'utf-8')
     browser = playwright.chromium.launch(headless=False)
@@ -22,8 +22,6 @@ def test_case_id_14(playwright: Playwright) -> None:
     assert last_month == "Ιδρύσεις (Νοεμβρίου)"
     assert three_months == "Ιδρύσεις Τριμήνου"
     assert year == "Ιδρύσεις Έτους"
-
-
 
     context.close()
     browser.close()

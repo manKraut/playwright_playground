@@ -3,7 +3,7 @@ import configparser
 from playwright.sync_api import Playwright, sync_playwright, expect
 
 
-def test_case_id_34(playwright: Playwright) -> None:
+def test_case_id_9(playwright: Playwright) -> None:
     config = configparser.ConfigParser()
     config.read('config.env', 'utf-8')
     browser = playwright.chromium.launch(headless=False)
@@ -19,11 +19,13 @@ def test_case_id_34(playwright: Playwright) -> None:
     page.get_by_placeholder("Password").fill(config['USER']['Password'])
     page.get_by_role("button", name="Είσοδος").click()
 
-    # Click on the Alert icon
-    page.locator("app-header").get_by_role("img").nth(3).click()
-    notification = page.locator("app-notification-item")
+    # Go to user's profile basic info and ask
+    page.locator("app-header").get_by_role("img").nth(4).click()
+    page.get_by_role("button", name="Βασικές Πληροφορίες").click()
+    page.get_by_role("button", name="Ανανέωση κωδικού").click()
+    message = page.get_by_text("Έχει αποσταλεί email με οδηγιες για ανανέωση του κωδικού πρόσβασης.").nth(1)
 
-    assert notification is not None
+    assert message == "Έχει αποσταλεί email με οδηγιες για ανανέωση του κωδικού πρόσβασης."
 
     context.close()
     browser.close()

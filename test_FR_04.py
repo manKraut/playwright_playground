@@ -10,7 +10,7 @@ def test_case_id_4(playwright: Playwright):
     context = browser.new_context()
     page = context.new_page()
     page.goto(config['PAGE']['Url'])
-    page.get_by_role("button", name="ΕΙΣΟΔΟΣ ΣΤΟ KYC").click()
+    page.get_by_role("button", name="ΕΙΣΟΔΟΣ ΣΤΟ B2B").click()
 
     context.close()
     browser.close()

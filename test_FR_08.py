@@ -1,9 +1,9 @@
 import configparser
 
-from playwright.sync_api import Playwright, Page, expect
+from playwright.sync_api import Playwright, sync_playwright, expect
 
 
-def test_case_id_8(playwright: Playwright):
+def test_case_id_8(playwright: Playwright) -> None:
     config = configparser.ConfigParser()
     config.read('config.env', 'utf-8')
     browser = playwright.chromium.launch(headless=False)
@@ -19,37 +19,14 @@ def test_case_id_8(playwright: Playwright):
     page.get_by_placeholder("Password").fill(config['USER']['Password'])
     page.get_by_role("button", name="Είσοδος").click()
 
-    # Access personal info
-    page.locator("app-header").get_by_role("img").nth(3).click()
-    page.get_by_role("button", name="Βασικές πληροφορίες").click()
+    # Access purchased packages
+    page.locator("app-header").get_by_role("img").nth(4).click()
+    page.get_by_role("button", name="Συνδρομές - Πακέτα Report").click()
+    subscriptions_tab = page.locator("label").filter(has_text="Συνδρομές")
+    reports_tab = page.get_by_text("Πακέτο Report")
 
-    # Change personal info
-    page.get_by_placeholder("'Ονομα").click()
-    page.get_by_placeholder("'Ονομα").fill("MJ")
-    page.get_by_placeholder("Επίθετο").click()
-    page.get_by_placeholder("Επίθετο").fill("J")
-    page.get_by_placeholder("Επωνυμία εταιρίας").click()
-    page.get_by_placeholder("Επωνυμία εταιρίας").fill("MJ")
-    page.get_by_placeholder("Δραστηριότητα εταιρίας").click()
-    page.get_by_placeholder("Δραστηριότητα εταιρίας").fill("MJ")
-    page.get_by_placeholder("Εταιρικό ΑΦΜ").click()
-    page.get_by_placeholder("Εταιρικό ΑΦΜ").fill("MJ")
-    page.get_by_placeholder("Διεύθυνση").click()
-    page.get_by_placeholder("Διεύθυνση").fill("MJ")
-    page.get_by_placeholder("Πόλη").click()
-    page.get_by_placeholder("Πόλη").fill("MJ")
-    page.get_by_placeholder("ΔΟΥ").click()
-    page.get_by_placeholder("ΔΟΥ").fill("M")
-    page.get_by_placeholder("Νομός").click()
-    page.get_by_placeholder("Νομός").fill("J")
-    page.get_by_placeholder("ΤΚ").click()
-    page.get_by_placeholder("ΤΚ").fill("11111")
-    page.get_by_placeholder("Νομός").click()
-    page.get_by_placeholder("Νομός").fill("JJ")
-
-    # Save Changes
-    page.get_by_role("button", name="Αποθήκευση αλλαγών").click()
-    page.get_by_role("link", name="Βασικές πληροφορίες").click()
+    assert subscriptions_tab is not None
+    assert reports_tab is not None
 
     context.close()
     browser.close()

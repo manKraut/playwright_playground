@@ -23,5 +23,20 @@ def test_case_id_6(playwright: Playwright):
     page.locator("app-header").get_by_role("img").nth(3).click()
     page.get_by_role("button", name="Βασικές πληροφορίες").click()
 
+    basic_info = [page.get_by_text("Όνομα"),
+    page.get_by_text("Επίθετο"),
+    page.get_by_role("heading", name="Στοιχεία Λογαριασμού"),
+    page.get_by_role("heading", name="Στοιχεία Χρέωσης"),
+    page.get_by_text("Επωνυμία εταιρείας"),
+    page.get_by_text("Τομέας Επαγγελματικής Δραστηριότητας"),
+    page.get_by_text("Α.Φ.Μ."),
+    page.get_by_text("Οδός"),
+    page.get_by_text("Πόλη"),
+    page.get_by_text("Δ.Ο.Υ."),
+    page.get_by_text("Τ.Κ."),
+    page.get_by_text("Νομός")]
+
+    assert len(basic_info) == 12
+
     context.close()
     browser.close()

@@ -3,7 +3,7 @@ import configparser
 from playwright.sync_api import Playwright, sync_playwright, expect
 
 
-def test_case_id_33(playwright: Playwright) -> None:
+def test_case_id_40(playwright: Playwright) -> None:
     config = configparser.ConfigParser()
     config.read('config.env', 'utf-8')
     browser = playwright.chromium.launch(headless=False)
@@ -18,3 +18,10 @@ def test_case_id_33(playwright: Playwright) -> None:
     page.get_by_placeholder("Password").click()
     page.get_by_placeholder("Password").fill(config['USER']['Password'])
     page.get_by_role("button", name="Είσοδος").click()
+
+    # verify that organization type filters are available
+    # org_type_filter = page.get_by_role("button", name="Εταιρικός Τύπος")
+
+    context.close()
+    browser.close()
+

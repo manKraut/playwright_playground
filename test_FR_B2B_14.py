@@ -3,7 +3,7 @@ import configparser
 from playwright.sync_api import Playwright, Page, expect
 
 
-def test_case_id_28(playwright: Playwright):
+def test_case_id_30(playwright: Playwright):
     config = configparser.ConfigParser()
     config.read('config.env', 'utf-8')
     browser = playwright.chromium.launch(headless=False)
@@ -26,3 +26,6 @@ def test_case_id_28(playwright: Playwright):
     page.get_by_text("Ξενοδοχεία" + " " + config['EXAMPLES']['b2bHotCnt_univ']).first.click()
 
     page.goto(config['PAGE']['UrlB2B'] + "/" + "b2b-my-leads?subscriptionId=" + config['EXAMPLES']['sid1'])
+
+    context.close()
+    browser.close()

@@ -3,7 +3,7 @@ import configparser
 from playwright.sync_api import Playwright, Page, expect
 
 
-def test_case_id_25(playwright: Playwright):
+def test_case_id_28(playwright: Playwright):
     config = configparser.ConfigParser()
     config.read('config.env', 'utf-8')
     browser = playwright.chromium.launch(headless=False)
