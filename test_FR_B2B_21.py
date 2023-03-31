@@ -3,7 +3,7 @@ import configparser
 from playwright.sync_api import Playwright, sync_playwright, expect
 
 
-def test_case_id_35(playwright: Playwright) -> None:
+def test_case_id_36(playwright: Playwright) -> None:
     config = configparser.ConfigParser()
     config.read('config.env', 'utf-8')
     browser = playwright.chromium.launch(headless=False)
@@ -24,4 +24,8 @@ def test_case_id_35(playwright: Playwright) -> None:
     page.locator(".bi bi-gear-fill settings:has(i)").click()
     # Through the menu uncheck the LB Live alert
     page.locator("#flexSwitchCheckChecked").nth(3).uncheck()
+
+    context.close()
+    browser.close()
+
 

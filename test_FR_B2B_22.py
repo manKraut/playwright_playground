@@ -3,7 +3,7 @@ import configparser
 from playwright.sync_api import Playwright, sync_playwright, expect
 
 
-def test_case_id_36(playwright: Playwright) -> None:
+def test_case_id_37(playwright: Playwright) -> None:
     config = configparser.ConfigParser()
     config.read('config.env', 'utf-8')
     browser = playwright.chromium.launch(headless=False)
@@ -18,5 +18,7 @@ def test_case_id_36(playwright: Playwright) -> None:
     page.get_by_placeholder("Password").click()
     page.get_by_placeholder("Password").fill(config['USER']['Password'])
     page.get_by_role("button", name="Είσοδος").click()
+
+
 
     

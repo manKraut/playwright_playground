@@ -4,7 +4,7 @@ import configparser
 from playwright.sync_api import Playwright, sync_playwright, expect
 
 
-def test_case_id_37(playwright: Playwright) -> None:
+def test_case_id_38(playwright: Playwright) -> None:
     config = configparser.ConfigParser()
     config.read('config.env', 'utf-8')
     browser = playwright.chromium.launch(headless=False)
@@ -20,10 +20,18 @@ def test_case_id_37(playwright: Playwright) -> None:
     page.get_by_placeholder("Password").fill(config['USER']['Password'])
     page.get_by_role("button", name="Είσοδος").click()
 
-    # Navigate through profile icon to the purchase list
-    page.locator("app-header").get_by_role("img").nth(4).click()
-    page.get_by_role("button", name="Ιστορικό Αγορών").click()
-    expect(page).to_have_url(config['PAGE']['UrlS'] + "/" + "user-profile" + "/" + "buy-history")
+    #
+    page.get_by_role("button", name="ΕΙΣΟΔΟΣ ΣΤΟ B2B").click()
+    page.get_by_placeholder("Αναζήτηση Αγοράς...").click()
+    page.get_by_role("option", name=f"Ξενοδοχεία ({config['EXAMPLES']['b2b_hotels_count_univ']})").click()
+    page.get_by_role("button", name="Αναζήτηση").click()
+    page.get_by_role("button", name="Λήψη Λίστας").click()
+    page.get_by_role("button", name="Προσθήκη στο Καλάθι").click()
+    page.locator(".notification-number").first.click()
+    page.get_by_role("button", name="Checkout").click()
+    page.get_by_role("button", name="Συνέχεια").click()
+
+    page.timeout(120000)
 
     context.close()
     browser.close()
