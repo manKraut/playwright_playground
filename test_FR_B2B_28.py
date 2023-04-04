@@ -22,7 +22,7 @@ def test_case_id_42(playwright: Playwright) -> None:
     # Execute a search in B2B Sales and apply geo filter. Then remove the filter
     page.get_by_role("button", name="ΕΙΣΟΔΟΣ ΣΤΟ B2B").click()
     page.get_by_placeholder("Αναζήτηση Αγοράς...").click()
-    page.get_by_role("option", name="Ξενοδοχεία (8.280)").click()
+    page.get_by_role("option", name=config['EXAMPLES']['example_market']).click()
     page.get_by_role("button", name="Αναζήτηση").click()
     page.get_by_role("button", name="Γεωγραφία").click()
     page.get_by_placeholder("Όλα τα επιμελητήρια").click()

@@ -19,9 +19,12 @@ def test_case_id_40(playwright: Playwright) -> None:
     page.get_by_placeholder("Password").fill(config['USER']['Password'])
     page.get_by_role("button", name="Είσοδος").click()
 
-    # verify that organization type filters are available
-    # org_type_filter = page.get_by_role("button", name="Εταιρικός Τύπος")
+    # Select a market and verify the organization type filter is available
+    page.get_by_role("option", name=config['EXAMPLES']['example_market']).click()
+    page.get_by_role("button", name="Αναζήτηση").click()
+    organization_type_filter_button = page.get_by_role("button", name="Εταιρικός Τύπος")
+
+    assert organization_type_filter_button is not None
 
     context.close()
     browser.close()
-

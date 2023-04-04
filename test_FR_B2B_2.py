@@ -12,7 +12,7 @@ def test_case_id_17(playwright: Playwright):
     page.goto(config['PAGE']['UrlB2B'])
     page.get_by_placeholder("Αναζήτηση Αγοράς...").click()
     available_markets = page.get_by_role("option").count()
-    assert available_markets == 5 # 4 markets and the final option of "Δεν βλέπετε την αγορά που σας ενδιαφέρει;Πατήστε εδώ..."
+    assert available_markets == config['PAGE']['num_of_available_markets']
 
     context.close()
     browser.close()
