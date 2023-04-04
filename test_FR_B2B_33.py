@@ -24,4 +24,3 @@ def test_case_id_47(playwright: Playwright)config = configparser.ConfigParser()
     context.close()
     browser.close()
 
-
