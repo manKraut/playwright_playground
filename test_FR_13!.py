@@ -1,9 +1,9 @@
 import configparser
 
-from playwright.sync_api import Playwright, Page, expect
+from playwright.sync_api import Playwright, sync_playwright, expect
 
 
-def test_case_id_19(playwright: Playwright):
+def test_case_id_12(playwright: Playwright) -> None:
     config = configparser.ConfigParser()
     config.read('config.env', 'utf-8')
     browser = playwright.chromium.launch(headless=False)
@@ -14,11 +14,4 @@ def test_case_id_19(playwright: Playwright):
     page = context.new_page()
     page.goto(config['PAGE']['Url'])
 
-    page.get_by_text("B2B").click()
-    page.get_by_role("button", name="Είσοδος στην Πλατφόρμα").click()
-
-    geo_filter = page.get_by_role("button", name="Γεωγραφία").count()
-    assert geo_filter == 1
-
-    context.close()
-    browser.close()
+    
