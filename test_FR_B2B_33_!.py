@@ -3,15 +3,21 @@ import configparser
 from playwright.sync_api import Playwright, sync_playwright, expect
 
 
-def test_case_id_47(playwright: Playwright)
+def test_case_id_47(playwright: Playwright) -> None:
     config = configparser.ConfigParser()
     config.read('config.env', 'utf-8')
     browser = playwright.chromium.launch(headless=False)
-    context = browser.new_context(
-        http_credentials={"username": "lbUser", "password": "lbP4ss2022!"}
-    )
+
+    if "front" in config['PAGE']['Url']:
+        context = browser.new_context(
+            http_credentials={"username": config['PAGE']['http_creds_username'],
+                              "password": config['PAGE']['http_creds_password']}
+        )
+    else:
+        context = browser.new_context()
+
     page = context.new_page()
-    page.goto(config['PAGE']['Url']) -> None:
+    page.goto(config['PAGE']['Url'])
 
 
     # Go to B2B Sales Leads"
