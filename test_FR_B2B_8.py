@@ -7,9 +7,23 @@ def test_case_id_22(playwright: Playwright) -> None:
     config = configparser.ConfigParser()
     config.read('config.env', 'utf-8')
     browser = playwright.chromium.launch(headless=False)
-    context = browser.new_context()
+
+    if "front" in config['PAGE']['Url']:
+        context = browser.new_context(
+            http_credentials={"username": config['PAGE']['http_creds_username'],
+                              "password": config['PAGE']['http_creds_password']}
+        )
+    else:
+        context = browser.new_context()
+
     page = context.new_page()
-    page.goto(config['PAGE']['UrlB2B'])
+    page.goto(config['PAGE']['Url'])
+
+    page.get_by_text("B2B").click()
+    page.get_by_role("button", name=config['PAGE']['entry_btn']).click()
+    redirection_page = page.url
+
+    #page.goto(config['PAGE']['UrlB2B'])
     page.get_by_placeholder("Αναζήτηση Αγοράς...").click()
     page.get_by_role("option", name="Δεν βλέπετε την αγορά που σας ενδιαφέρει;Πατήστε εδώ...").click()
     title_on_page = page.get_by_role("heading", name="Όλες οι Αγορές")
