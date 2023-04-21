@@ -20,7 +20,7 @@ def test_case_id_47(playwright: Playwright) -> None:
     page.goto(config['PAGE']['Url'])
 
 
-    # Go to B2B Sales Leads"
+    # Go to B2B Sales Leads
     page.get_by_role("button", name="ΕΙΣΟΔΟΣ ΣΤΟ B2B").click()
     page.locator("app-button", has_text="Εταιρικός Τύπος").hover()
     page.wait_for_timeout(3000)
