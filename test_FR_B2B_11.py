@@ -3,7 +3,7 @@ import configparser
 from playwright.sync_api import Playwright, Page, expect
 
 
-def test_case_id_30(playwright: Playwright):
+def test_case_id_28(playwright: Playwright):
     config = configparser.ConfigParser()
     config.read('config.env', 'utf-8')
     browser = playwright.chromium.launch(headless=False)
@@ -34,10 +34,15 @@ def test_case_id_30(playwright: Playwright):
     #page.get_by_role("button", name="ΕΙΣΟΔΟΣ ΣΤΟ B2B").click()
 
     page.get_by_role("link", name="B2B Dashboard").click()
-    # click on first purchased lead which is B2B Live
+    # click on first purchased lead
     page.get_by_text("Ξενοδοχεία" + " " + config['EXAMPLES']['b2bHotCnt_univ']).first.click()
+    #page.goto(config['PAGE']['Url'] + "/" + "b2b-dashboard" + "/" + "b2b-my-leads?subscriptionId=" + config['EXAMPLES']['sid1'])
+    # click at a point on map
+    page.locator("div:nth-child(3) > div:nth-child(4)").click()
+    # get the name of the company, showing on the map
+    name_on_map = page.get_by_role("heading", name=config['EXAMPLES']['cn5'])
 
-    page.goto(config['PAGE']['UrlB2B'] + "/" + "b2b-my-leads?subscriptionId=" + config['EXAMPLES']['sid1'])
+    assert name_on_map is not None
 
     context.close()
     browser.close()
