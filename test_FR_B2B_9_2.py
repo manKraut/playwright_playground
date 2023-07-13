@@ -20,24 +20,19 @@ def test_case_id_24(playwright: Playwright) -> None:
     page.goto(config['PAGE']['Url'])
 
     page.get_by_text("B2B").click()
-    page.get_by_role("button", name=config['PAGE']['entry_btn']).click()
-    redirection_page = page.url
+    page.get_by_role("button", name="Είσοδος στην Πλατφόρμα").click()
 
-
-    #page.goto(config['PAGE']['UrlB2B'])
 
     page.get_by_placeholder("Αναζήτηση Αγοράς...").click()
     page.get_by_role("option", name="Ξενοδοχεία" + " " + "(" + config['EXAMPLES']['b2b_hotels_count_univ'] + ")").click()
-    page.get_by_role("button", name="Αναζήτηση").click()
 
     initial_market_value = page.locator(".stats-value").nth(0).inner_text().replace('.', '')
 
     page.get_by_role("button", name="Γεωγραφία").click()
-    page.get_by_label("Περιφέρεια").check()
-    page.get_by_placeholder("Όλες οι περιφέρειες").click()
-    page.get_by_role("button", name="Αττικής").click()
+    page.get_by_label("Περιφερειακή Ενότητα").check()
+    page.get_by_placeholder("Όλες οι περιφερειακές ενότητες").click()
+    page.get_by_role("button", name="Θεσσαλονίκης").click()
     page.get_by_role("button", name="Εφαρμογή Φίλτρου").click()
-    page.get_by_role("button", name="Αναζήτηση").click()
 
     filtered_market_value = page.locator(".stats-value").nth(0).inner_text().replace('.', '')
 

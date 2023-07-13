@@ -3,7 +3,7 @@ import configparser
 from playwright.sync_api import Playwright, sync_playwright, expect
 
 
-def test_case_id_40(playwright: Playwright) -> None:
+def test_case_id_46(playwright: Playwright) -> None:
     config = configparser.ConfigParser()
     config.read('config.env', 'utf-8')
     browser = playwright.chromium.launch(headless=False)
@@ -28,12 +28,15 @@ def test_case_id_40(playwright: Playwright) -> None:
     page.get_by_text("B2B").click()
     page.get_by_role("button", name="Είσοδος στην Πλατφόρμα").click()
 
-    # Select a market and verify the organization type filter is available
+    # Go to B2B Sales Leads and select market
     page.get_by_placeholder("Επιλέξτε Αγορά...").click()
-    page.get_by_role("option", name=config['EXAMPLES']['example_market']).click()
-    organization_type_filter_button = page.get_by_role("button", name="Εταιρικός Τύπος")
+    page.get_by_role("option", name="Εστιατόρια").click()
 
-    assert organization_type_filter_button is not None
+    # Press the button "Δείτε τις υπόλοιπες Χ"
+    page.locator('button:has-text("Αποκτήστε τις υπόλοιπες")').click()
+    order_id = page.url.split('=')[2]
+
+    assert order_id == '80133'
 
     context.close()
     browser.close()

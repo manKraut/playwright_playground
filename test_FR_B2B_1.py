@@ -9,7 +9,8 @@ def test_case_id_16(playwright: Playwright):
     browser = playwright.chromium.launch(headless=False)
     # context = browser.new_context()
     context = browser.new_context(
-        http_credentials={"username": "lbUser", "password": "lbP4ss2022!"}
+        http_credentials={"username": config['HTTP CREDS']['username'],
+                          "password": config['HTTP CREDS']['password']}
     )
     page = context.new_page()
     page.goto(config['PAGE']['Url'])
@@ -17,7 +18,7 @@ def test_case_id_16(playwright: Playwright):
     # Verify box availability
     page.get_by_text("B2B").click()
     page.get_by_role("button", name="Είσοδος στην Πλατφόρμα").click()
-    box_availability = page.get_by_placeholder("Αναζήτηση Αγοράς...").count()
+    box_availability = page.get_by_placeholder("Επιλέξτε Αγορά...").count()
     assert box_availability == 1
 
     context.close()

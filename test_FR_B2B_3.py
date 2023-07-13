@@ -9,7 +9,8 @@ def test_case_id_19(playwright: Playwright):
     browser = playwright.chromium.launch(headless=False)
     # context = browser.new_context()
     context = browser.new_context(
-        http_credentials={"username": "lbUser", "password": "lbP4ss2022!"}
+        http_credentials={"username": config['HTTP CREDS']['username'],
+                          "password": config['HTTP CREDS']['password']}
     )
     page = context.new_page()
     page.goto(config['PAGE']['Url'])

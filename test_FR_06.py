@@ -7,19 +7,18 @@ def test_case_id_6(playwright: Playwright):
     config = configparser.ConfigParser()
     config.read('config.env', 'utf-8')
     browser = playwright.chromium.launch(headless=False)
-    context = browser.new_context()
-    # context = browser.new_context(
-    #     http_credentials={"username": "lbUser", "password": "lbP4ss2022!"}
-    # )
+    # context = browser.new_context()
+    context = browser.new_context(
+        http_credentials={"username": config['HTTP CREDS']['username'],
+                          "password": config['HTTP CREDS']['password']}
+    )
     page = context.new_page()
     page.goto(config['PAGE']['Url'])
 
     # Successful Login
     page.get_by_role("button", name="Είσοδος/Εγγραφή").click()
-    page.get_by_role("textbox", name="Email").click()
-    page.get_by_role("textbox", name="Email").fill(config['USER']['Email'])
-    page.get_by_role("textbox", name="Password").click()
-    page.get_by_role("textbox", name="Password").fill(config['USER']['Password'])
+    page.get_by_role("textbox", name="Email").fill(config['USER LOGIN']['email'])
+    page.get_by_role("textbox", name="Password").fill(config['USER LOGIN']['password'])
     page.get_by_role("button", name="Είσοδος").click()
 
     # Access personal info
@@ -28,20 +27,12 @@ def test_case_id_6(playwright: Playwright):
     page.locator("app-header").get_by_role("img").nth(3).click()
     page.get_by_role("button", name="Βασικές πληροφορίες").click()
 
-    basic_info = [page.get_by_text("Όνομα"),
-    page.get_by_text("Επίθετο"),
-    page.get_by_role("heading", name="Στοιχεία Λογαριασμού"),
-    page.get_by_role("heading", name="Στοιχεία Χρέωσης"),
-    page.get_by_text("Επωνυμία εταιρείας"),
-    page.get_by_text("Τομέας Επαγγελματικής Δραστηριότητας"),
-    page.get_by_text("Α.Φ.Μ."),
-    page.get_by_text("Οδός"),
-    page.get_by_text("Πόλη"),
-    page.get_by_text("Δ.Ο.Υ."),
-    page.get_by_text("Τ.Κ."),
-    page.get_by_text("Νομός")]
+    info_text = ["Όνομα", "Επίθετο", "Στοιχεία Λογαριασμού", "Στοιχεία Χρέωσης", "Επωνυμία εταιρείας",
+                  "Τομέας Επαγγελματικής Δραστηριότητας", "Α.Φ.Μ.", "Οδός", "Πόλη", "Δ.Ο.Υ.", "Τ.Κ.", "Νομός"]
 
-    assert len(basic_info) == 12
+    for info in info_text:
+        assert page.get_by_text(info).inner_text() == info
+
 
     context.close()
     browser.close()

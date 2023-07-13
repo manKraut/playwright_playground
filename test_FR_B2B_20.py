@@ -22,21 +22,22 @@ def test_case_id_35(playwright: Playwright) -> None:
 
     # Successful Login
     page.get_by_role("button", name="Είσοδος/Εγγραφή").click()
-    page.get_by_role("textbox", name="Email").click()
-    page.get_by_role("textbox", name="Email").fill(config['USER']['Email'])
-    page.get_by_role("textbox", name="Password").click()
-    page.get_by_role("textbox", name="Password").fill(config['USER']['Password'])
+    page.get_by_role("textbox", name="Email").fill(config['USER LOGIN']['email'])
+    page.get_by_role("textbox", name="Password").fill(config['USER LOGIN']['password'])
     page.get_by_role("button", name="Είσοδος").click()
 
     page.get_by_text("B2B").click()
-    page.get_by_role("button", name=config['PAGE']['entry_btn']).click()
-    redirection_page = page.url
+    page.get_by_role("button", name="Είσοδος στην Πλατφόρμα").click()
 
     # Navigate to relevant alert
+    page.wait_for_timeout(2000)
     page.locator("app-header").get_by_role("img").nth(3).click()
-    page.get_by_role("heading", name="Market").click()
+    page.get_by_text("Ενημέρωση Παραγγελίας για B2B Subscription 11/07/2023 12:21").click()
     page.get_by_role("button", name="Μετάβαση στα Στοιχεία").click()
-    expect(page).to_have_url(config['PAGE']['UrlB2B'] + "/" + "b2b-markets-view")
+    page.wait_for_timeout(5000)
+    redirection_url = page.url
+
+    assert redirection_url == "https://front.linkedbusiness.eu/b2b-dashboard/b2b-markets-view"
 
     context.close()
     browser.close()

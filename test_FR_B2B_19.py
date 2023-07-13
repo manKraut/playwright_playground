@@ -21,15 +21,12 @@ def test_case_id_34(playwright: Playwright) -> None:
 
     # Successful Login
     page.get_by_role("button", name="Είσοδος/Εγγραφή").click()
-    page.get_by_role("textbox", name="Email").click()
-    page.get_by_role("textbox", name="Email").fill(config['USER']['Email'])
-    page.get_by_role("textbox", name="Password").click()
-    page.get_by_role("textbox", name="Password").fill(config['USER']['Password'])
+    page.get_by_role("textbox", name="Email").fill(config['USER LOGIN']['email'])
+    page.get_by_role("textbox", name="Password").fill(config['USER LOGIN']['password'])
     page.get_by_role("button", name="Είσοδος").click()
 
     page.get_by_text("B2B").click()
-    page.get_by_role("button", name=config['PAGE']['entry_btn']).click()
-    redirection_page = page.url
+    page.get_by_role("button", name="Είσοδος στην Πλατφόρμα").click()
 
     # Click on the Alert icon
     page.locator("app-header").get_by_role("img").nth(3).click()

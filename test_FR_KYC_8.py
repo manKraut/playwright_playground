@@ -2,41 +2,43 @@ import configparser
 
 from playwright.sync_api import Playwright, Page, expect
 
-def test_case_id_48(playwright: Playwright):
+def test_case_id_42(playwright: Playwright):
     config = configparser.ConfigParser()
     config.read('config.env', 'utf-8')
     browser = playwright.chromium.launch(headless=False)
-    context = browser.new_context()
+
+    if "front" in config['PAGE']['Url']:
+        context = browser.new_context(
+            http_credentials={"username": config['PAGE']['http_creds_username'],
+                              "password": config['PAGE']['http_creds_password']}
+        )
+    else:
+        context = browser.new_context()
+
     page = context.new_page()
     page.goto(config['PAGE']['Url'])
 
     # Successful Login
+    page.get_by_role("button", name="Είσοδος/Εγγραφή").click()
+    page.get_by_role("textbox", name="Email").fill(config['USER LOGIN']['email'])
+    page.get_by_role("textbox", name="Password").fill(config['USER LOGIN']['password'])
     page.get_by_role("button", name="Είσοδος").click()
-    page.get_by_placeholder("Email").click()
-    page.get_by_placeholder("Password").click()
-    page.get_by_placeholder("Password").fill(config['USER']['Password'])
-    page.get_by_placeholder("Email").click()
-    page.get_by_placeholder("Email").fill(config['USER']['Email'])
-    page.get_by_placeholder("Password").click()
-    page.get_by_role("button", name="Είσοδος").click()
-    page.get_by_role("button", name="ΕΙΣΟΔΟΣ ΣΤΟ KYC").click()
 
-    # Successful Login
-    page.get_by_placeholder("Αναζήτηση επιχείρησης με ΑΦΜ ή ΓΕΜΗ...").fill(config['EXAMPLES']['g3']) #company gemh
-    page.get_by_role("button", name="Αναζήτηση").click()
-    page.get_by_role("link", name=config['EXAMPLES']['cn3']).click() #company name
-    page.get_by_role("link", name="Δημόσιο Χρήμα").click()
+    page.get_by_text("KYC (KNOW YOUR CUSTOMER)").click()
+    page.get_by_role("button", name="Είσοδος στην Πλατφόρμα").click()
 
+    page.get_by_placeholder("Αναζήτηση επιχείρησης με ΑΦΜ ή ΓΕΜΗ...").fill("800950289")
+    page.get_by_placeholder("Αναζήτηση επιχείρησης με ΑΦΜ ή ΓΕΜΗ...").press("Enter")
+    page.get_by_text("LB LINKED BUSINESS ΑΝΩΝΥΜΗ ΕΤΑΡΕΙΑ").click(force=True)
 
-    #assume company is bought
+    page.locator("app-money-block").get_by_role("button", name="Δείτε περισσότερα...").click()
+    top_buyers = page.get_by_text("Μεγαλύτεροι Πληρωτές").inner_text()
+    assignments = page.get_by_text("Αναθέσεις & Πληρωμές από το Δημόσιο").inner_text()
+    payments_aggregations = page.get_by_text("Ποσό & Τύπος Απόφασης ανά Έτος").inner_text()
 
-    #look for labels
-
-    page.get_by_text("Ποσό & Τύπος Απόφασης ανά Έτος").click()
-    page.get_by_text("Αναθέσεις & Πληρωμές από το Δημόσιο").click()
-    page.get_by_text(config['EXAMPLES']['dp31']).click()
-    page.get_by_text(config['EXAMPLES']['dp32']).click()
-
+    assert top_buyers == "Μεγαλύτεροι Πληρωτές"
+    assert assignments == "Αναθέσεις & Πληρωμές από το Δημόσιο"
+    assert payments_aggregations == "Ποσό & Τύπος Απόφασης ανά Έτος"
 
     context.close()
     browser.close()

@@ -21,21 +21,20 @@ def test_case_id_36(playwright: Playwright) -> None:
 
     # Successful Login
     page.get_by_role("button", name="Είσοδος/Εγγραφή").click()
-    page.get_by_role("textbox", name="Email").click()
-    page.get_by_role("textbox", name="Email").fill(config['USER']['Email'])
-    page.get_by_role("textbox", name="Password").click()
-    page.get_by_role("textbox", name="Password").fill(config['USER']['Password'])
+    page.get_by_role("textbox", name="Email").fill(config['USER LOGIN']['email'])
+    page.get_by_role("textbox", name="Password").fill(config['USER LOGIN']['password'])
     page.get_by_role("button", name="Είσοδος").click()
 
     page.get_by_text("B2B").click()
-    page.get_by_role("button", name=config['PAGE']['entry_btn']).click()
-    redirection_page = page.url
+    page.get_by_role("button", name="Είσοδος στην Πλατφόρμα").click()
 
     # Go to alert icon and select settings
-    page.locator("app-header").get_by_role("img").nth(2).click()
-    page.locator(".bi bi-gear-fill settings:has(i)").click()
+    page.wait_for_timeout(2000)
+    page.locator("app-header").get_by_role("img").nth(3).click()
+    page.goto("https://front.linkedbusiness.eu/notifications/settings")
     # Through the menu uncheck the LB Live alert
-    page.locator("#flexSwitchCheckChecked").nth(3).uncheck()
+    page.get_by_role("switch").nth(1).uncheck()
+    page.get_by_role("switch").nth(1).check()
 
     context.close()
     browser.close()

@@ -31,16 +31,15 @@ def test_case_id_42(playwright: Playwright):
     page.get_by_placeholder("Αναζήτηση επιχείρησης με ΑΦΜ ή ΓΕΜΗ...").fill("800950289")
     page.get_by_placeholder("Αναζήτηση επιχείρησης με ΑΦΜ ή ΓΕΜΗ...").press("Enter")
     page.get_by_text("LB LINKED BUSINESS ΑΝΩΝΥΜΗ ΕΤΑΡΕΙΑ").click(force=True)
+    basic_info = page.get_by_role("heading", name="Βασικά Στοιχεία").inner_text()
+    bo = page.locator("app-company-overview").get_by_text("Διοίκηση & Ιδιοκτησία").inner_text()
+    company_events = page.locator("app-company-overview").get_by_text("Εταιρικά Γεγονότα").inner_text()
+    public_money = page.locator("app-company-overview").get_by_text("Δημόσιο Χρήμα").inner_text()
 
-    page.locator("app-business-network-block").get_by_role("button", name="Δείτε περισσότερα...").click()
-    board = page.get_by_text("Διοικητικές Θέσεις (ΓΕΜΗ)").inner_text()
-    ownership = page.get_by_text("Ιδιοκτησία").nth(2).inner_text()
-    network = page.get_by_text("Δίκτυο Ιδιοκτησίας & Διοίκησης").inner_text()
-
-    assert board == "Διοικητικές Θέσεις (ΓΕΜΗ)"
-    assert ownership == "Ιδιοκτησία"
-    assert network == "Δίκτυο Ιδιοκτησίας & Διοίκησης"
-
+    assert basic_info == "Βασικά Στοιχεία"
+    assert bo == "Διοίκηση & Ιδιοκτησία"
+    assert company_events == "Εταιρικά Γεγονότα"
+    assert public_money == "Δημόσιο Χρήμα"
 
     context.close()
     browser.close()

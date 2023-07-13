@@ -16,13 +16,10 @@ def test_case_id_51(playwright: Playwright) -> None:
 
     # Successful Login
     page.get_by_role("button", name="Είσοδος/Εγγραφή").click()
-    page.get_by_role("textbox", name="Email").click()
-    page.get_by_role("textbox", name="Email").fill(config['USER']['Email'])
-    page.get_by_role("textbox", name="Password").click()
-    page.get_by_role("textbox", name="Password").fill(config['USER']['Password'])
+    page.get_by_role("textbox", name="Email").fill(config['USER LOGIN']['email'])
+    page.get_by_role("textbox", name="Password").fill(config['USER LOGIN']['password'])
     page.get_by_role("button", name="Είσοδος").click()
 
-    # Enter platform
     page.get_by_text("B2B").click()
     page.get_by_role("button", name="Είσοδος στην Πλατφόρμα").click()
 
@@ -41,14 +38,23 @@ def test_case_id_51(playwright: Playwright) -> None:
     page.get_by_placeholder("Εταιρικό ΑΦΜ").fill("800950289")
     page.get_by_role("button", name="Συνέχεια").click()
 
-    stripeFrame = page.frame_locator('iframe').content_frame()
-    stripeFrame.wait_for_selector('input[name="Αριθμός Κάρτας"]').fill('4242424242424242')
+    page.wait_for_timeout(3000)
+    print("going to locate it")
+
+    # page.on("frameattached", page.get_by_placeholder("Αριθμός κάρτας"))
+
+    card_number_iframe = page.main_frame.child_frames[6].name
+    print(card_number_iframe)
+    page.frame_locator(card_number_iframe).get_by_role("presentation").click()
+    page.frame_locator(card_number_iframe).get_by_role("presentation").fill("45444544454")
+    # page.frame_locator(card_number_iframe).locator(".InputContainer").fill("45444544454")
+    # page.frame_locator(f"#{card_number_iframe}").fill("434343434")
+
+
+    # stripeFrame.wait_for_selector('input[name="Αριθμός κάρτας"]').fill('4242424242424242')
     # stripeFrame.locator('[placeholder="MM / YY"]').fill('04/30')
     # stripeFrame.locator('[placeholder="CVC"]').fill('242')
 
-
-
-    page.wait_for_timeout(3000)
 
     context.close()
     browser.close()

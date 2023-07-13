@@ -9,17 +9,16 @@ def test_case_id_11(playwright: Playwright):
     browser = playwright.chromium.launch(headless=False)
     # context = browser.new_context()
     context = browser.new_context(
-        http_credentials={"username": "lbUser", "password": "lbP4ss2022!"}
+        http_credentials={"username": config['HTTP CREDS']['username'],
+                          "password": config['HTTP CREDS']['password']}
     )
     page = context.new_page()
     page.goto(config['PAGE']['Url'])
 
     # Successful Login
     page.get_by_role("button", name="Είσοδος/Εγγραφή").click()
-    page.get_by_role("textbox", name="Email").click()
-    page.get_by_role("textbox", name="Email").fill(config['USER']['Email'])
-    page.get_by_role("textbox", name="Password").click()
-    page.get_by_role("textbox", name="Password").fill(config['USER']['Password'])
+    page.get_by_role("textbox", name="Email").fill(config['USER LOGIN']['email'])
+    page.get_by_role("textbox", name="Password").fill(config['USER LOGIN']['password'])
     page.get_by_role("button", name="Είσοδος").click()
 
     # Purchase a list and verify that a warning for blank left field is shown
@@ -27,20 +26,18 @@ def test_case_id_11(playwright: Playwright):
     page.get_by_role("button", name="Είσοδος στην Πλατφόρμα").click()
     page.get_by_placeholder("Αναζήτηση Αγοράς...").click()
     page.get_by_role("option", name=config['EXAMPLES']['example_market']).click()
-    page.get_by_role("button", name="Αναζήτηση").click()
     page.get_by_role("button", name="Λήψη Λίστας").click()
     page.get_by_role("button", name="Προσθήκη στο Καλάθι").click()
 
-    # page.get_by_role("img").nth(1).click()  Must be fulfiled with iframe which is under investigation
-
+    page.locator("app-header").get_by_text("1").first.click()
     page.get_by_role("button", name="Checkout").click()
     page.get_by_role("button", name="Συνέχεια").click()
     page.get_by_placeholder("Διεύθυνση").click()
     page.get_by_placeholder("Διεύθυνση").fill("")
     page.get_by_placeholder("Τηλέφωνο").click()
-    warning_text = page.get_by_text("Το πεδίο ειναι υποχρεωτικό.").click()
+    warning_text = page.get_by_text("Το πεδίο ειναι υποχρεωτικό.").inner_text()
 
-    assert warning_text is not None
+    assert warning_text == "Το πεδίο ειναι υποχρεωτικό."
 
     context.close()
     browser.close()

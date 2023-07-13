@@ -2,8 +2,7 @@ import configparser
 
 from playwright.sync_api import Playwright, Page, expect
 
-
-def test_case_id_7(playwright: Playwright):
+def test_case_id_2(playwright: Playwright):
     config = configparser.ConfigParser()
     config.read('config.env', 'utf-8')
     browser = playwright.chromium.launch(headless=False)
@@ -15,14 +14,17 @@ def test_case_id_7(playwright: Playwright):
     page = context.new_page()
     page.goto(config['PAGE']['Url'])
 
-    # Fill in the email and check if proper message is prompt
+    # Successful Login with Facebook
     page.get_by_role("button", name="Είσοδος/Εγγραφή").click()
-    page.get_by_role("textbox", name="Email").fill(config['USER LOGIN']['email'])
+    page.locator("#btn-fb").click()
+    page.get_by_role("button", name="Decline optional cookies").click()
+    page.get_by_placeholder("Email or phone number").fill(config['USER SOCIALS']['email'])
+    page.get_by_placeholder("Password").fill(config['USER SOCIALS']['password'])
+    page.get_by_role("button", name="Log In").click()
+    page.wait_for_timeout(10000)
+    url = page.url
 
-    page.get_by_role("button", name="Ξέχασα το password").click()
-    message = page.get_by_text("Μόλις σας στείλαμε Email για να αλλάξετε τον κωδικό σας.").inner_text()
-
-    assert message == "Μόλις σας στείλαμε Email για να αλλάξετε τον κωδικό σας."
+    assert url == "https://front.linkedbusiness.eu/"
 
     context.close()
     browser.close()

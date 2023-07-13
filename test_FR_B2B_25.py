@@ -22,20 +22,16 @@ def test_case_id_39(playwright: Playwright) -> None:
 
     # Successful Login
     page.get_by_role("button", name="Είσοδος/Εγγραφή").click()
-    page.get_by_role("textbox", name="Email").click()
-    page.get_by_role("textbox", name="Email").fill(config['USER']['Email'])
-    page.get_by_role("textbox", name="Password").click()
-    page.get_by_role("textbox", name="Password").fill(config['USER']['Password'])
+    page.get_by_role("textbox", name="Email").fill(config['USER LOGIN']['email'])
+    page.get_by_role("textbox", name="Password").fill(config['USER LOGIN']['password'])
     page.get_by_role("button", name="Είσοδος").click()
 
     page.get_by_text("B2B").click()
-    page.get_by_role("button", name=config['PAGE']['entry_btn']).click()
-    redirection_page = page.url
+    page.get_by_role("button", name="Είσοδος στην Πλατφόρμα").click()
 
     # Select a market and verify the incorporation date filter is available
-    page.get_by_placeholder("Αναζήτηση Αγοράς...").click()
+    page.get_by_placeholder("Επιλέξτε Αγορά...").click()
     page.get_by_role("option", name=config['EXAMPLES']['example_market']).click()
-    page.get_by_role("button", name="Αναζήτηση").click()
     incorporation_date_filter_button = page.get_by_role("button", name="Μήνας Ίδρυσης")
 
     assert incorporation_date_filter_button is not None

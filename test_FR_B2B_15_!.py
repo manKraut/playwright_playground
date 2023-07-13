@@ -21,22 +21,18 @@ def test_case_id_31(playwright: Playwright):
 
     # Successful Login
     page.get_by_role("button", name="Είσοδος/Εγγραφή").click()
-    page.get_by_role("textbox", name="Email").click()
-    page.get_by_role("textbox", name="Email").fill(config['USER']['Email'])
-    page.get_by_role("textbox", name="Password").click()
-    page.get_by_role("textbox", name="Password").fill(config['USER']['Password'])
+    page.get_by_role("textbox", name="Email").fill(config['USER LOGIN']['email'])
+    page.get_by_role("textbox", name="Password").fill(config['USER LOGIN']['password'])
     page.get_by_role("button", name="Είσοδος").click()
 
     page.get_by_text("B2B").click()
-    page.get_by_role("button", name=config['PAGE']['entry_btn']).click()
-    redirection_page = page.url
+    page.get_by_role("button", name="Είσοδος στην Πλατφόρμα").click()
 
-    #page.get_by_role("button", name="ΕΙΣΟΔΟΣ ΣΤΟ B2B").click()
+    page.get_by_role("button", name="Επιλογή Υπηρεσίας").click()
+    page.get_by_role("button", name="B2B Dashboard").click(force=True)
 
-    page.get_by_role("link", name="B2B Dashboard").click()
     # click on first purchased lead
-    page.get_by_text("Ξενοδοχεία" + " " + config['EXAMPLES']['b2bHotCnt_univ']).first.click()
-    page.goto(config['PAGE']['UrlB2B'] + "/" + "b2b-my-leads?subscriptionId=" + config['EXAMPLES']['sid1'])
+    page.locator("app-b2b-markets-view").get_by_role("img").nth(1).click()
     # click at a point on map
     page.locator("div:nth-child(3) > div:nth-child(4)").click()
     # get the name of the company, showing on the map

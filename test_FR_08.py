@@ -1,9 +1,9 @@
 import configparser
 
-from playwright.sync_api import Playwright, sync_playwright, expect
+from playwright.sync_api import Playwright, Page, expect
 
 
-def test_case_id_9(playwright: Playwright) -> None:
+def test_case_id_8(playwright: Playwright):
     config = configparser.ConfigParser()
     config.read('config.env', 'utf-8')
     browser = playwright.chromium.launch(headless=False)
@@ -15,21 +15,19 @@ def test_case_id_9(playwright: Playwright) -> None:
     page = context.new_page()
     page.goto(config['PAGE']['Url'])
 
-    # Successful Login
+    # Successful Login and access platform
     page.get_by_role("button", name="Είσοδος/Εγγραφή").click()
     page.get_by_role("textbox", name="Email").fill(config['USER LOGIN']['email'])
     page.get_by_role("textbox", name="Password").fill(config['USER LOGIN']['password'])
     page.get_by_role("button", name="Είσοδος").click()
-
-    # Go to user's profile basic info and ask
-    page.get_by_text("B2B").click()
     page.get_by_role("button", name="Είσοδος στην Πλατφόρμα").click()
-    page.locator("app-header").get_by_role("img").nth(3).click()
-    page.get_by_role("button", name="Βασικές Πληροφορίες").click()
-    page.get_by_role("button", name="Ανανέωση κωδικού").click()
-    message = page.get_by_text("Έχει αποσταλεί email με οδηγιες για ανανέωση του κωδικού πρόσβασης.").nth(1)
 
-    assert message is not None
+    # Access purchased subscriptions
+    page.locator("app-header").get_by_role("img").nth(3).click()
+    page.get_by_role("button", name="Συνδρομές - Πακέτα Report").click()
+    subscription = page.get_by_text("Subscription: Pro").inner_text()
+
+    assert subscription == "Subscription: Pro"
 
     context.close()
     browser.close()

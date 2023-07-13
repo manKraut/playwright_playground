@@ -1,9 +1,9 @@
 import configparser
 
-from playwright.sync_api import Playwright, sync_playwright, expect
+from playwright.sync_api import Playwright, Page, expect
 
 
-def test_case_id_40(playwright: Playwright) -> None:
+def test_case_id_29(playwright: Playwright):
     config = configparser.ConfigParser()
     config.read('config.env', 'utf-8')
     browser = playwright.chromium.launch(headless=False)
@@ -28,12 +28,16 @@ def test_case_id_40(playwright: Playwright) -> None:
     page.get_by_text("B2B").click()
     page.get_by_role("button", name="Είσοδος στην Πλατφόρμα").click()
 
-    # Select a market and verify the organization type filter is available
-    page.get_by_placeholder("Επιλέξτε Αγορά...").click()
-    page.get_by_role("option", name=config['EXAMPLES']['example_market']).click()
-    organization_type_filter_button = page.get_by_role("button", name="Εταιρικός Τύπος")
+    page.get_by_role("button", name="Επιλογή Υπηρεσίας").click()
+    page.get_by_role("button", name="B2B Dashboard").click(force=True)
 
-    assert organization_type_filter_button is not None
+    # click on the first purchased lead
+    page.locator("app-b2b-markets-view").get_by_role("img").click()
+    page.get_by_role("link", name=config['EXAMPLES']['first_universe_result']).click()
+    page.wait_for_timeout(5000)
+    redirection_url = page.url
+
+    assert redirection_url == config['PAGE']['Url'] + "/" + config['EXAMPLES']['first_universe_result_subscription_id'] + "/overview"
 
     context.close()
     browser.close()

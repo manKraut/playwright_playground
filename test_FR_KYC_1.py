@@ -3,7 +3,7 @@ import configparser
 from playwright.sync_api import Playwright, Page, expect
 
 
-def test_case_id_27(playwright: Playwright):
+def test_case_id_42(playwright: Playwright):
     config = configparser.ConfigParser()
     config.read('config.env', 'utf-8')
     browser = playwright.chromium.launch(headless=False)
@@ -19,21 +19,13 @@ def test_case_id_27(playwright: Playwright):
     page = context.new_page()
     page.goto(config['PAGE']['Url'])
 
-    # Successful Login
-    page.get_by_role("button", name="Είσοδος/Εγγραφή").click()
-    page.get_by_role("textbox", name="Email").fill(config['USER LOGIN']['email'])
-    page.get_by_role("textbox", name="Password").fill(config['USER LOGIN']['password'])
-    page.get_by_role("button", name="Είσοδος").click()
-
-    page.get_by_text("B2B").click()
+    page.get_by_text("KYC (KNOW YOUR CUSTOMER)").click()
     page.get_by_role("button", name="Είσοδος στην Πλατφόρμα").click()
 
-    page.get_by_role("button", name="Επιλογή Υπηρεσίας").click()
-    page.get_by_role("button", name="B2B Dashboard").click(force=True)
-    dashboard_title = page.get_by_text("Αγορασμένα Leads").inner_text()
+    # Verify that the platform provides a search box for KYC
+    kyc_search_box = page.get_by_placeholder("Αναζήτηση επιχείρησης με ΑΦΜ ή ΓΕΜΗ...").count()
 
-    assert dashboard_title == "Αγορασμένα Leads"
+    assert kyc_search_box == 1
 
     context.close()
     browser.close()
-
