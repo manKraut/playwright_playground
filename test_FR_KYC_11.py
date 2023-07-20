@@ -6,37 +6,41 @@ def test_case_id_51(playwright: Playwright):
     config = configparser.ConfigParser()
     config.read('config.env', 'utf-8')
     browser = playwright.chromium.launch(headless=False)
-    context = browser.new_context()
+
+    if "front" in config['PAGE']['Url']:
+        context = browser.new_context(
+            http_credentials={"username": config['PAGE']['http_creds_username'],
+                              "password": config['PAGE']['http_creds_password']}
+        )
+    else:
+        context = browser.new_context()
+
     page = context.new_page()
     page.goto(config['PAGE']['Url'])
 
     # Successful Login
+    page.get_by_role("button", name="Είσοδος/Εγγραφή").click()
+    page.get_by_role("textbox", name="Email").fill(config['USER LOGIN']['email'])
+    page.get_by_role("textbox", name="Password").fill(config['USER LOGIN']['password'])
     page.get_by_role("button", name="Είσοδος").click()
-    page.get_by_placeholder("Email").click()
-    page.get_by_placeholder("Password").click()
-    page.get_by_placeholder("Password").fill(config['USER']['Password'])
-    page.get_by_placeholder("Email").click()
-    page.get_by_placeholder("Email").fill(config['USER']['Email'])
-    page.get_by_placeholder("Password").click()
-    page.get_by_role("button", name="Είσοδος").click()
-    page.get_by_role("button", name="ΕΙΣΟΔΟΣ ΣΤΟ KYC").click()
 
-    # Successful Login
-    page.get_by_placeholder("Αναζήτηση επιχείρησης με ΑΦΜ ή ΓΕΜΗ...").fill(config['EXAMPLES']['g1']) #company gemh
-    page.get_by_role("button", name="Αναζήτηση").click()
-    page.get_by_role("link", name=config['EXAMPLES']['cn1']).click() #company name
-    page.get_by_role("link", name="Εταιρικά Γεγονότα").click()
+    page.get_by_text("KYC (KNOW YOUR CUSTOMER)").click()
+    page.get_by_role("button", name="Είσοδος στην Πλατφόρμα").click()
 
-
-    #assume company is bought
-
+    # Enter AFM and visit company's KYC Profile
+    page.get_by_placeholder("Αναζήτηση επιχείρησης με ΑΦΜ ή ΓΕΜΗ...").fill(config['EXAMPLES']['kyc_vat'])
+    page.get_by_placeholder("Αναζήτηση επιχείρησης με ΑΦΜ ή ΓΕΜΗ...").press("Enter")
+    page.get_by_text("LB LINKED BUSINESS ΑΝΩΝΥΜΗ ΕΤΑΡΕΙΑ").click(force=True)
+    # go to events block
+    page.locator("app-company-events-block").get_by_role("button", name="Δείτε περισσότερα...").click()
     #look for labels
+    demographics = page.get_by_text("Δείκτης Πληρότητας Οικονομικών & Δημογραφικών Στοιχείων").inner_text()
+    announcements = page.get_by_text("Ανακοινώσεις ανά Κατηγορία").inner_text()
+    recent_announcements = page.get_by_text("Πρόσφατες Ανακοινώσεις").inner_text()
 
-    page.get_by_text("Δείκτης Πληρότητας Οικονομικών & Δημογραφικών Στοιχείων").click()
-    page.get_by_text("Ανακοινώσεις ανά Κατηγορία").click()
-    page.get_by_text(config['EXAMPLES']['ea11'])
-    page.get_by_text(config['EXAMPLES']['ea12'])
-
+    assert demographics == "Δείκτης Πληρότητας Οικονομικών & Δημογραφικών Στοιχείων"
+    assert announcements == "Ανακοινώσεις ανά Κατηγορία"
+    assert recent_announcements == "Πρόσφατες Ανακοινώσεις"
 
     context.close()
     browser.close()

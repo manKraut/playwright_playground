@@ -2,8 +2,7 @@ import configparser
 
 from playwright.sync_api import Playwright, Page, expect
 
-
-def test_case_id_42(playwright: Playwright):
+def test_case_id_55(playwright: Playwright):
     config = configparser.ConfigParser()
     config.read('config.env', 'utf-8')
     browser = playwright.chromium.launch(headless=False)
@@ -27,20 +26,15 @@ def test_case_id_42(playwright: Playwright):
 
     page.get_by_text("KYC (KNOW YOUR CUSTOMER)").click()
     page.get_by_role("button", name="Είσοδος στην Πλατφόρμα").click()
+    page.wait_for_timeout(2000)
 
-    page.get_by_placeholder("Αναζήτηση επιχείρησης με ΑΦΜ ή ΓΕΜΗ...").fill(config['EXAMPLES']['kyc_vat'])
-    page.get_by_placeholder("Αναζήτηση επιχείρησης με ΑΦΜ ή ΓΕΜΗ...").press("Enter")
-    page.get_by_text("LB LINKED BUSINESS ΑΝΩΝΥΜΗ ΕΤΑΡΕΙΑ").click(force=True)
+    # Enter notifications and search for option that refers to KYC
+    page.locator("app-header").get_by_role("img").nth(3).click()
+    page.get_by_role("link", name="Δείτε περισσότερα...").click()
+    button_kyc_notifications = page.get_by_role("button", name="Υπηρεσία Know Your Customer").inner_text()
 
-    page.locator("app-business-network-block").get_by_role("button", name="Δείτε περισσότερα...").click()
-    board = page.get_by_text("Διοικητικές Θέσεις (ΓΕΜΗ)").inner_text()
-    ownership = page.get_by_text("Ιδιοκτησία").nth(2).inner_text()
-    network = page.get_by_text("Δίκτυο Ιδιοκτησίας & Διοίκησης").inner_text()
-
-    assert board == "Διοικητικές Θέσεις (ΓΕΜΗ)"
-    assert ownership == "Ιδιοκτησία"
-    assert network == "Δίκτυο Ιδιοκτησίας & Διοίκησης"
-
+    assert button_kyc_notifications == "Υπηρεσία Know Your Customer"
 
     context.close()
     browser.close()
+
